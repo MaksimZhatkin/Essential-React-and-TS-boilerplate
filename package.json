@@ -1,5 +1,5 @@
 {
-  "name": "reactboilerplatev4",
+  "name": "react-boilerplate",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,8 +12,13 @@
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"",
     "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "webpack",
+    "react",
+    "typescript",
+    "boilerplate"
+  ],
+  "author": "MaksimZhatkin",
   "license": "ISC",
   "dependencies": {
     "react": "^18.3.1",
