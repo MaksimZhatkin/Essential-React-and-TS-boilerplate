@@ -9,8 +9,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  entry: './src/index.tsx',
+  // Configuration
   mode: 'development',
+  entry: './src/index.tsx',
+  output: {
+    filename: '[name].[contenthash].js',
+    path: path.resolve(__dirname, 'public'),
+    clean: true,
+  },
+  resolve: {
+    extensions: ['.jsx', '.js', '.ts', '.tsx'],
+  },
+
+  // Modules
   module: {
     rules: [
       {
@@ -34,18 +45,15 @@ export default {
       },
     ],
   },
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  },
-  output: {
-    filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'public'),
-  },
+
+  // Pugins
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
   ],
+
+  // Server
   devServer: {
     static: './public',
     port: 3000,
