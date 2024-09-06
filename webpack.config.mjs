@@ -24,7 +24,7 @@ export default (env) => {
     devtool: isDev ? 'eval' : 'source-map',
     entry: './src/index.tsx',
     output: {
-      filename: '[name].bundle.js',
+      filename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'public'),
       clean: true,
     },
@@ -80,7 +80,9 @@ export default (env) => {
     plugins: [
       // isDev && new ProgressPlugin(),
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'public', 'index.html'),
+        template: path.resolve(__dirname, 'src', 'template.html'),
+        filename: 'index.html',
+        inject: 'body',
       }),
       isProd &&
         new MiniCssExtractPlugin({
