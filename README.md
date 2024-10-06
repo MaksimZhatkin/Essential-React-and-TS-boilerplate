@@ -1,5 +1,9 @@
 # Essential-React-and-TS-boilerplate
 
+- React
+- ReduxToolkit
+- TypeScript
+
 - **"start:dev"** ➡️"webpack serve --open --env mode=development",
 - **"start:prod"** ➡️ "webpack serve --open --env mode=production",
 - **"build"** ➡️ "webpack --env mode=production",
