@@ -20,6 +20,7 @@ export default (env) => {
 
   return {
     // Configuration
+    stats: 'errors-warnings',
     mode: env.mode ?? 'development',
     devtool: isDev ? 'eval' : 'source-map',
     entry: './src/index.tsx',
@@ -54,7 +55,13 @@ export default (env) => {
           test: /\.css$/,
           use: [
             isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
-            'css-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 1,
+              },
+            },
             {
               loader: 'postcss-loader',
               options: {

@@ -1,0 +1,10 @@
+.app_header {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0 25px 0;
+  grid-area: header;
+}
+
+.app_title {
+  font-size: 36px;
+}

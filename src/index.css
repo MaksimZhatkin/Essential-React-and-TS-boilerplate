@@ -1,0 +1,38 @@
+/* Normalize */
+html {
+  font-family:
+    'Open Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: #f3f7fa;
+  color: #4a4a4a;
+  min-height: 101vh;
+}
+
+body {
+  margin: 0;
+  padding-block-end: 50px;
+}
+
+/* Container */
+body > main {
+  display: grid;
+  grid-template-areas: 'header header header header';
+  gap: 24px;
+  max-width: 755px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Box Model */
+html {
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
