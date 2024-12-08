@@ -1,17 +1,13 @@
-/*eslint-disable*/
+/* eslint-disable */
 import { fileURLToPath } from 'url';
 import path from 'path';
-
-// import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
-// const ProgressPlugin = webpack.ProgressPlugin;
 
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
 
 export default (env) => {
@@ -19,11 +15,10 @@ export default (env) => {
   const isProd = env.mode === 'production';
 
   return {
-    // Configuration
     stats: 'errors-warnings',
     mode: env.mode ?? 'development',
     devtool: isDev ? 'eval' : 'source-map',
-    entry: './src/index.tsx',
+    entry: './src/main.tsx',
     output: {
       filename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'public'),
@@ -31,9 +26,17 @@ export default (env) => {
     },
     resolve: {
       extensions: ['.jsx', '.js', '.ts', '.tsx'],
+      alias: {
+        app: path.resolve(__dirname, 'src/app/'),
+        pages: path.resolve(__dirname, 'src/pages/'),
+        widgets: path.resolve(__dirname, 'src/widgets/'),
+        features: path.resolve(__dirname, 'src/features/'),
+        modules: path.resolve(__dirname, 'src/modules/'),
+        entities: path.resolve(__dirname, 'src/entities/'),
+        shared: path.resolve(__dirname, 'src/shared/'),
+        assets: path.resolve(__dirname, 'src/assets/'),
+      },
     },
-
-    // Modules
     module: {
       rules: [
         {
@@ -53,39 +56,65 @@ export default (env) => {
         },
         {
           test: /\.css$/,
-          use: [
-            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          oneOf: [
             {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                importLoaders: 1,
-              },
+              test: /\.module\.css$/,
+              use: [
+                isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+                {
+                  loader: 'css-loader',
+                  options: {
+                    modules: {
+                      localIdentName: isDev ? '[path][name]__[local]' : '[hash:base64]',
+                    },
+                    importLoaders: 1,
+                  },
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    postcssOptions: {
+                      plugins: [
+                        [
+                          'postcss-preset-env',
+                          {
+                            browsers: ['last 2 versions', 'Firefox ESR', 'not OperaMini All', 'not dead'],
+                          },
+                        ],
+                        ['autoprefixer', {}],
+                      ],
+                    },
+                  },
+                },
+              ],
             },
             {
-              loader: 'postcss-loader',
-              options: {
-                postcssOptions: {
-                  plugins: [
-                    [
-                      'postcss-preset-env',
-                      {
-                        browsers: ['last 2 versions', 'Firefox ESR', 'not OperaMini All', 'not dead'],
-                      },
-                    ],
-                    ['autoprefixer', {}],
-                  ],
+              use: [
+                isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+                'css-loader',
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    postcssOptions: {
+                      plugins: [
+                        [
+                          'postcss-preset-env',
+                          {
+                            browsers: ['last 2 versions', 'Firefox ESR', 'not OperaMini All', 'not dead'],
+                          },
+                        ],
+                        ['autoprefixer', {}],
+                      ],
+                    },
+                  },
                 },
-              },
+              ],
             },
           ],
         },
       ],
     },
-
-    // Pugins
     plugins: [
-      // isDev && new ProgressPlugin(),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src', 'template.html'),
         filename: 'index.html',
@@ -93,7 +122,8 @@ export default (env) => {
       }),
       isProd &&
         new MiniCssExtractPlugin({
-          filename: '[name].[contenthash].css',
+          filename: 'styles.[contenthash].css',
+          ignoreOrder: true,
         }),
       new CopyPlugin({
         patterns: [
@@ -104,41 +134,15 @@ export default (env) => {
         ],
       }),
     ].filter(Boolean),
-
-    // Optimization
     optimization: {
       minimize: true,
       minimizer: [new CssMinimizerPlugin({}), new TerserPlugin()],
-
-      splitChunks: {
-        chunks: 'all',
-        maxInitialRequests: 5, // Max number of parallel requests for on-demand loading
-        maxAsyncRequests: 7, // Max number of parallel requests at an entry point
-        cacheGroups: {
-          default: false, // Disable the default cache groups
-          vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: -10,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2, // Minimum number of chunks that must share a module before splitting
-            chunks: 'all',
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        },
-      },
+      splitChunks: false,
+      runtimeChunk: false,
     },
-
-    // Performance
     performance: {
       hints: false,
     },
-
-    // Server
     devServer: {
       static: './public',
       port: 3000,
