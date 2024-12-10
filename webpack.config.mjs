@@ -17,7 +17,7 @@ export default (env) => {
   return {
     stats: 'errors-warnings',
     mode: env.mode ?? 'development',
-    devtool: isDev ? 'eval' : 'source-map',
+    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
     entry: './src/main.tsx',
     output: {
       filename: '[name].[contenthash].js',
