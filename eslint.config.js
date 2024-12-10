@@ -1,5 +1,3 @@
-// @ts-check
-
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -10,15 +8,10 @@ import pluginReactQuery from '@tanstack/eslint-plugin-query';
 import globals from 'globals';
 import pluginPrettier from 'eslint-plugin-prettier';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-// @ts-ignore
 import pluginReact from 'eslint-plugin-react';
-// @ts-ignore
 import pluginReactHooks from 'eslint-plugin-react-hooks';
-// @ts-ignore
 import ConfigPrettier from 'eslint-config-prettier';
-// @ts-ignore
 import pluginReactJSXa11y from 'eslint-plugin-jsx-a11y';
-// @ts-ignore
 import { FlatCompat } from '@eslint/eslintrc';
 
 /* eslint-disable no-underscore-dangle */
@@ -26,7 +19,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 /* eslint-enable no-underscore-dangle */
 
-// @ts-ignore
 const compat = new FlatCompat({
   baseDirectory: __dirname, // optional; default: process.cwd()
   resolvePluginsRelativeTo: __dirname, // optional
