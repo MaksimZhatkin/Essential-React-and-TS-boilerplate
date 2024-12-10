@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
     "lib": ["DOM"],
-    "target": "ES6",
     "module": "ESNext",
+    "target": "ES6",
     "jsx": "react",
+    "moduleResolution": "bundler",
+    "baseUrl": "src",
+    "sourceMap": true,
     "strict": true,
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": "src",
     "paths": {
       "app/*": ["app/*"],
       "entities/*": ["entities/*"],
@@ -21,5 +22,5 @@
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "Global.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "eslint.config.js"]
 }
