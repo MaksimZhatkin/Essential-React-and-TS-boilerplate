@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import StatoscopeWebpackPlugin from '@statoscope/webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -115,6 +116,12 @@ export default (env) => {
       ],
     },
     plugins: [
+      new StatoscopeWebpackPlugin({
+        saveReportTo: './statoscope-report.html',
+        statsOptions: {
+          all: true,
+        },
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src', 'template.html'),
         filename: 'index.html',
@@ -137,8 +144,21 @@ export default (env) => {
     optimization: {
       minimize: true,
       minimizer: [new CssMinimizerPlugin({}), new TerserPlugin()],
-      splitChunks: false,
-      runtimeChunk: false,
+      splitChunks: {
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+        },
+      },
+      runtimeChunk: 'single',
     },
     performance: {
       hints: false,
